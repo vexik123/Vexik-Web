@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>maxur0</title>
+    
+    <!-- --- META TAGS FOR DISCORD EMBEDS --- -->
+    <meta property="og:title" content="maxur0 | yeat">
+    <meta property="og:description" content="yeat fan | twizzy rich | fivem">
+    <meta property="og:image" content="https://cdn.discordapp.com/avatars/1286234889653588042/dab7ff1602cc85346992a3de05d1dd69.png">
+    <meta property="og:url" content="https://maxur0.xyz">
+    <meta name="theme-color" content="#000000">
+    
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="https://cdn.discordapp.com/avatars/1286234889653588042/dab7ff1602cc85346992a3de05d1dd69.png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Core Settings --- */
+        :root {
+            /* YEAT THEME: Neon Green & Dark Industrial */
+            --accent: #DFFF00; /* Neon Chartreuse */
+            --accent-secondary: #4a4a4a; /* Dark Grey */
+            --bg-dark: #000000;
+        }
+
+        /* CUSTOM SELECTION COLOR */
+        ::selection {
+            background: var(--accent);
+            color: black;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            overflow: hidden;
+            cursor: none; /* Custom cursor everywhere */
+            user-select: none;
+        }
+
+        /* --- BACKGROUND IMAGE LAYER --- */
+        .bg-image {
+            position: fixed;
+            top: -5%;
+            left: -5%;
+            width: 110vw; /* Larger than screen for parallax movement */
+            height: 110vh;
+            z-index: -20; /* Behind the stars */
+            background-image: url('https://i.pinimg.com/originals/c9/c5/4b/c9c54b20745582f939775319830883b2.jpg'); 
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4; /* Low opacity so text is readable */
+            filter: grayscale(100%) contrast(120%); /* Aesthetic filter */
+            transition: transform 0.1s ease-out; /* Smooth movement */
+        }
+
+        .mono { font-family: 'Space Mono', monospace; }
+
+        /* --- Custom Cursor --- */
+        #cursor {
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s;
+            mix-blend-mode: difference;
+        }
+        
+        #cursor-dot {
+            width: 4px;
+            height: 4px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background-color: rgba(223, 255, 0, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        /* --- Scanlines & Vignette --- */
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        .vignette {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+            pointer-events: none;
+            z-index: 49;
+        }
+
+        /* --- 3D Tilt Card --- */
+        #perspective-container { perspective: 1000px; }
+
+        #profile-card {
+            background: rgba(10, 10, 10, 0.7); /* Darker card for contrast */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(223, 255, 0, 0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(255,255,255,0.02);
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        #profile-card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            z-index: -1;
+            background: linear-gradient(45deg, transparent, var(--accent), #333, transparent);
+            border-radius: inherit;
+            opacity: 0.4;
+            animation: border-rotate 4s linear infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes border-rotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Audio Visualizer --- */
+        .visualizer-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 4px;
+            height: 20px;
+        }
+        .bar {
+            width: 4px;
+            background: var(--accent);
+            border-radius: 1px;
+            animation: bounce 1s infinite ease-in-out;
+            box-shadow: 0 0 8px var(--accent);
+        }
+        .bar:nth-child(1) { animation-duration: 0.8s; height: 40%; }
+        .bar:nth-child(2) { animation-duration: 1.1s; height: 70%; }
+        .bar:nth-child(3) { animation-duration: 1.3s; height: 100%; }
+        .bar:nth-child(4) { animation-duration: 0.9s; height: 60%; }
+        .bar:nth-child(5) { animation-duration: 1.2s; height: 30%; }
+
+        @keyframes bounce {
+            0%, 100% { transform: scaleY(0.3); opacity: 0.3; }
+            50% { transform: scaleY(1); opacity: 1; }
+        }
+
+        /* --- Text Effects --- */
+        .username-glow {
+            color: #fff;
+            text-shadow: 0 0 15px rgba(223, 255, 0, 0.6);
+        }
+        
+        .pulse-dot {
+            box-shadow: 0 0 0 0 rgba(223, 255, 0, 0.4);
+            animation: pulse-green 2s infinite;
+            background-color: var(--accent);
+        }
+        
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(223, 255, 0, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(223, 255, 0, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(223, 255, 0, 0); }
+        }
+
+        /* --- Status Flicker Animation (Enhanced) --- */
+        @keyframes flicker {
+            0%, 100% { opacity: 1; text-shadow: 0 0 10px #39ff14; }
+            50% { opacity: 0.3; text-shadow: none; }
+        }
+
+        .status-flicker {
+            animation: flicker 1.5s infinite; /* Faster continuous pulse */
+            color: #39ff14; /* Bright Neon Green */
+        }
+
+        /* --- Twizzy Text Animation --- */
+        @keyframes glitch-skew {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(-2deg); }
+            40% { transform: skew(2deg); }
+            60% { transform: skew(-1deg); }
+            80% { transform: skew(1deg); }
+            100% { transform: skew(0deg); }
+        }
+        
+        .twizzy-text {
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            animation: glitch-skew 2s infinite linear alternate-reverse;
+            text-shadow: 2px 0 var(--accent), -2px 0 red;
+        }
+
+        /* --- Volume Slider Styling --- */
+        .volume-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        .volume-visible {
+            opacity: 1;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100px;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        /* --- Animated Widget Gradient --- */
+        @keyframes border-dance {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .widget-animated {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 0.75rem;
+            z-index: 1;
+        }
+
+        .widget-animated::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            z-index: -1;
+            background: linear-gradient(45deg, #DFFF00, transparent, #DFFF00);
+            background-size: 200% 200%;
+            animation: border-dance 3s ease infinite;
+            border-radius: inherit;
+            opacity: 0.6;
+        }
+
+        /* Mini Equalizer */
+        .mini-eq {
+            display: flex;
+            align-items: flex-end;
+            gap: 1px;
+            height: 10px;
+        }
+        .mini-bar {
+            width: 2px;
+            background-color: #DFFF00;
+            animation: sound 0.5s linear infinite alternate;
+        }
+        .mini-bar:nth-child(2) { animation-delay: 0.1s; }
+        .mini-bar:nth-child(3) { animation-delay: 0.2s; }
+        
+        @keyframes sound {
+            0% { height: 2px; }
+            100% { height: 100%; }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;"> <!-- Disables Right Click -->
+
+    <!-- Background Image Layer -->
+    <div class="bg-image"></div>
+
+    <!-- Cursor System -->
+    <div id="cursor"></div>
+    <div id="cursor-dot"></div>
+
+    <!-- Overlays -->
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+
+    <!-- Background Canvas (Stars on top of image) -->
+    <canvas id="bg-canvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
+
+    <!-- Volume Control -->
+    <div id="volume-control" class="volume-control">
+        <i class="fas fa-volume-up text-[#DFFF00] text-xs"></i>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.2">
+    </div>
+
+    <!-- Click to Enter -->
+    <div id="enter-overlay" class="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center cursor-pointer transition-all duration-1000">
+        <div class="relative">
+            <p class="mono text-[#DFFF00] text-sm tracking-[0.5em] uppercase hover:text-white transition-colors duration-300 animate-pulse font-bold shadow-lg">
+                [ 2 alivë ]
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div id="main-content" class="hidden min-h-screen flex items-center justify-center p-4 relative z-20 overflow-hidden" id="perspective-container">
+        
+        <!-- 3D Tilt Card (Size set to 360px) -->
+        <div id="profile-card" class="w-full max-w-[360px] rounded-2xl p-8 opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+            
+            <div class="flex flex-col items-center relative z-10">
+                
+                <!-- PFP Section -->
+                <div class="relative group mb-6">
+                    <!-- Glow behind PFP -->
+                    <div class="absolute -inset-0.5 bg-gradient-to-br from-[#DFFF00] to-black rounded-full blur opacity-40 group-hover:opacity-80 transition duration-500"></div>
+                    
+                    <!-- Image -->
+                    <div class="relative w-28 h-28 rounded-full p-[2px] bg-black overflow-hidden border border-[#DFFF00]/20">
+                        <img src="https://cdn.discordapp.com/avatars/1286234889653588042/dab7ff1602cc85346992a3de05d1dd69.png" alt="Profile" class="w-full h-full rounded-full object-cover filter brightness-100 contrast-110 hover:scale-105 transition-transform duration-500">
+                    </div>
+
+                    <!-- Online Badge -->
+                    <div class="absolute bottom-2 right-2 w-5 h-5 bg-black rounded-full flex items-center justify-center" title="Online">
+                        <div class="w-3 h-3 rounded-full pulse-dot"></div>
+                    </div>
+                </div>
+
+                <!-- Identity -->
+                <div class="text-center mb-6">
+                    <div class="flex items-center justify-center gap-2 mb-1">
+                        <h1 class="text-2xl font-bold text-white tracking-tight username-glow">maxur0</h1>
+                        <!-- YEAT BADGE -->
+                        <span class="bg-[#DFFF00]/10 text-[#DFFF00] border border-[#DFFF00]/30 rounded px-1.5 py-0.5 text-[10px] uppercase font-bold tracking-wider shadow-[0_0_10px_rgba(223,255,0,0.2)]">YEAT</span>
+                    </div>
+                    
+                    <!-- Typewriter -->
+                    <div class="h-6 flex items-center justify-center gap-2 text-sm text-gray-400 mono font-bold">
+                        <span class="text-[#DFFF00]">//</span>
+                        <span id="typewriter"></span>
+                        <span class="animate-pulse text-[#DFFF00]">_</span>
+                    </div>
+                </div>
+
+                <!-- Visualizer -->
+                <div class="visualizer-container mb-6">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+
+                <!-- NOW PLAYING WIDGET (ANIMATED) -->
+                <div class="relative w-full max-w-[90%] mb-6">
+                    <!-- Animated Border Container -->
+                    <div class="widget-animated p-[1px]">
+                        <div class="flex items-center gap-3 bg-black/40 backdrop-blur-md p-3 rounded-xl h-full w-full">
+                            <!-- Rotating Album Cover -->
+                            <img src="https://www26.hiphopkit.com/uploads/2022/09/Yeat-Flawlss-artwork.webp" class="w-10 h-10 rounded-full object-cover animate-[spin_6s_linear_infinite] shadow-lg shadow-[#DFFF00]/10 border border-[#DFFF00]/30" alt="Album">
+                            
+                            <div class="text-left overflow-hidden flex-1">
+                                <div class="flex items-center gap-2">
+                                    <p class="text-xs font-bold text-white leading-none truncate tracking-wide">Flawlëss</p>
+                                    <!-- Mini EQ -->
+                                    <div class="mini-eq">
+                                        <div class="mini-bar"></div>
+                                        <div class="mini-bar"></div>
+                                        <div class="mini-bar"></div>
+                                    </div>
+                                </div>
+                                <p class="text-[10px] text-gray-400 leading-none mt-1 truncate">Yeat (feat. Lil Uzi Vert)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TWIZZY RICH / STATUS -->
+                <div class="text-center w-full mb-6">
+                    <!-- YEAT THEME DECORATION -->
+                    <h2 class="text-xl text-white/90 mb-2 twizzy-text">TWIZZY RICH</h2>
+                    
+                    <!-- CHEAT STATUS INDICATOR - SUBTLE -->
+                    <p class="text-[10px] font-bold tracking-[0.2em] text-gray-500 opacity-80 inline-block">
+                        STATUS: <span class="status-flicker">UNDETECTED</span>
+                    </p>
+                </div>
+
+                <!-- Neon Divider (Header) -->
+                <div class="w-full max-w-[85%] h-[2px] bg-gradient-to-r from-transparent via-[#DFFF00] to-transparent shadow-[0_0_15px_#DFFF00] mb-6 opacity-100"></div>
+
+                <!-- Links Grid -->
+                <div class="grid grid-cols-2 gap-3 w-full px-8">
+                    
+                    <!-- Discord -->
+                    <div onclick="copyDiscord()" class="group relative flex items-center justify-center aspect-square rounded-xl bg-white/5 border border-white/5 hover:bg-[#5865F2]/20 hover:border-[#5865F2]/50 hover:scale-105 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-[#5865F2]/20">
+                        <i class="fab fa-discord text-xl text-gray-300 group-hover:text-[#5865F2] transition-colors"></i>
+                        <span id="discord-tooltip" class="absolute bottom-full mb-2 bg-black border border-[#DFFF00]/30 text-[#DFFF00] text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none tracking-widest uppercase">Zkopíruj si mě 😘</span>
+                    </div>
+
+                    <!-- Spotify -->
+                    <a href="https://open.spotify.com/user/fccebyniu5dj1q9t4h4vhg2jk?si=8f540360e7b5418c" target="_blank" class="group relative flex items-center justify-center aspect-square rounded-xl bg-white/5 border border-white/5 hover:bg-[#1DB954]/20 hover:border-[#1DB954]/50 hover:scale-105 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-[#1DB954]/20">
+                        <i class="fab fa-spotify text-xl text-gray-300 group-hover:text-[#1DB954] transition-colors"></i>
+                    </a>
+
+                </div>
+
+                <!-- Live Clock Footer -->
+                <div class="w-full flex justify-center items-center pb-4 pt-2">
+                    <!-- ENHANCED VISIBILITY CLOCK -->
+                    <p id="clock" class="mono text-xs font-bold text-[#DFFF00] tracking-widest drop-shadow-[0_0_5px_rgba(223,255,0,0.5)]">00:00:00</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Player -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://maxur0.xyz/song.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // --- Configuration ---
+        const config = {
+            discordId: "maxur01",
+            roles: ["yeat fan", "twizzy rich"], 
+            typingSpeed: 100,
+            deleteSpeed: 50,
+            pauseTime: 2000
+        };
+
+        // --- TITLE ANIMATION ---
+        let titleText = "maxur0 | yeat ";
+        let titleIndex = 0;
+        
+        function animateTitle() {
+            document.title = titleText.substring(titleIndex) + titleText.substring(0, titleIndex);
+            titleIndex = (titleIndex + 1) % titleText.length;
+            setTimeout(animateTitle, 300);
+        }
+        animateTitle();
+
+        // --- CLOCK LOGIC ---
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+            document.getElementById('clock').innerText = timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- SPACEBAR TO PAUSE/PLAY ---
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                event.preventDefault(); // Prevent scrolling
+                if (audio.paused) {
+                    audio.play();
+                } else {
+                    audio.pause();
+                }
+            }
+        });
+
+        // --- Elements ---
+        const overlay = document.getElementById('enter-overlay');
+        const mainContent = document.getElementById('main-content');
+        const profileCard = document.getElementById('profile-card');
+        const audio = document.getElementById('bg-music');
+        const typewriterSpan = document.getElementById('typewriter');
+        const volumeSlider = document.getElementById('volume-slider');
+        const volumeControl = document.getElementById('volume-control');
+        
+        // --- Volume Slider Logic ---
+        volumeSlider.addEventListener('input', (e) => {
+            audio.volume = e.target.value;
+        });
+
+        // --- 1. Warp Speed Background (Modified for Yeat Theme - Green/White) ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let stars = [];
+        const numStars = 400; 
+        const warpSpeed = 1.8; 
+        const starColors = ["#ffffff", "#DFFF00", "#555555"]; 
+
+        function resizeCanvas() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            stars = [];
+            for (let i = 0; i < numStars; i++) {
+                stars.push(createStar());
+            }
+        }
+
+        function createStar() {
+            return {
+                x: Math.random() * width - width / 2, 
+                y: Math.random() * height - height / 2,
+                z: Math.random() * width, 
+                color: starColors[Math.floor(Math.random() * starColors.length)]
+            };
+        }
+
+        function drawStars() {
+            // Stars are now transparent to show BG image
+            ctx.clearRect(0, 0, width, height);
+            
+            const cx = width / 2;
+            const cy = height / 2;
+
+            stars.forEach(star => {
+                star.z -= warpSpeed;
+                if (star.z <= 0) {
+                    star.x = Math.random() * width - width / 2;
+                    star.y = Math.random() * height - height / 2;
+                    star.z = width;
+                }
+                const k = 128.0 / star.z; 
+                const px = star.x * k + cx;
+                const py = star.y * k + cy;
+                const size = (1 - star.z / width) * 2.5;
+                const opacity = (1 - star.z / width);
+
+                if (px >= 0 && px <= width && py >= 0 && py <= height) {
+                    ctx.globalAlpha = opacity;
+                    ctx.fillStyle = star.color;
+                    ctx.beginPath();
+                    ctx.arc(px, py, size, 0, Math.PI * 2);
+                    ctx.fill();
+                    if(size > 1.5 && star.color === "#DFFF00") {
+                        ctx.shadowBlur = 15;
+                        ctx.shadowColor = star.color;
+                    } else {
+                        ctx.shadowBlur = 0;
+                    }
+                }
+            });
+            ctx.shadowBlur = 0; 
+            requestAnimationFrame(drawStars);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        drawStars();
+
+        // --- 2. Advanced Cursor System ---
+        const cursor = document.getElementById('cursor');
+        const cursorDot = document.getElementById('cursor-dot');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+            createTrail(mouseX, mouseY);
+            
+            // PARALLAX BACKGROUND EFFECT
+            const bgImage = document.querySelector('.bg-image');
+            const xMove = (window.innerWidth - e.clientX) / 90;
+            const yMove = (window.innerHeight - e.clientY) / 90;
+            bgImage.style.transform = `translate(${xMove}px, ${yMove}px)`;
+        });
+
+        function animateCursor() {
+            const dx = mouseX - cursorX;
+            const dy = mouseY - cursorY;
+            cursorX += dx * 0.15;
+            cursorY += dy * 0.15;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        function createTrail(x, y) {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.style.left = x + 'px';
+            trail.style.top = y + 'px';
+            document.body.appendChild(trail);
+            setTimeout(() => {
+                trail.style.transform = 'translate(-50%, -50%) scale(0)';
+                trail.style.opacity = '0';
+            }, 10);
+            setTimeout(() => trail.remove(), 500);
+        }
+
+        // --- 3. 3D Tilt Effect ---
+        const card = document.getElementById('profile-card');
+        const container = document.getElementById('main-content');
+
+        container.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left; 
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -10; 
+            const rotateY = ((x - centerX) / centerX) * 10;
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        container.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+        });
+
+        // --- 4. Entry & Typewriter Logic ---
+        overlay.addEventListener('click', () => {
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+
+            // Audio Logic
+            audio.volume = 0.2; 
+            var playPromise = audio.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    if (audio.duration && audio.duration > 40) {
+                        audio.currentTime = 40;
+                    } else {
+                        audio.addEventListener('loadedmetadata', function() {
+                            audio.currentTime = 40;
+                        }, { once: true });
+                    }
+                })
+                .catch(error => {
+                    console.log("Audio play failed:", error);
+                });
+            }
+
+            mainContent.classList.remove('hidden');
+            volumeControl.classList.add('volume-visible');
+
+            setTimeout(() => {
+                profileCard.classList.remove('opacity-0', 'translate-y-8');
+                startTypewriter();
+            }, 500);
+        });
+
+        function startTypewriter() {
+            let roleIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function type() {
+                const currentRole = config.roles[roleIndex];
+                const speed = isDeleting ? config.deleteSpeed : config.typingSpeed;
+
+                if (!isDeleting && charIndex < currentRole.length) {
+                    typewriterSpan.textContent += currentRole.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(type, speed);
+                } else if (isDeleting && charIndex > 0) {
+                    typewriterSpan.textContent = currentRole.substring(0, charIndex - 1);
+                    charIndex--;
+                    setTimeout(type, speed);
+                } else {
+                    isDeleting = !isDeleting;
+                    if (!isDeleting) {
+                        roleIndex = (roleIndex + 1) % config.roles.length;
+                    }
+                    setTimeout(type, config.pauseTime);
+                }
+            }
+            type();
+        }
+
+        // ROBUST COPY FUNCTION
+        function copyDiscord() {
+            const textToCopy = config.discordId;
+            
+            // Attempt 1: Modern API
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(showTooltip)
+                    .catch(() => fallbackCopy(textToCopy)); // Fail? Go to fallback
+            } else {
+                // Attempt 2: Fallback for older browsers or insecure contexts
+                fallbackCopy(textToCopy);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            
+            // Improved strategy for Brave/Mobile
+            textArea.style.position = "fixed";
+            textArea.style.left = "0";
+            textArea.style.top = "0";
+            textArea.style.opacity = "0";
+            textArea.setAttribute("readonly", ""); 
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            textArea.setSelectionRange(0, 99999); 
+            
+            try {
+                const successful = document.execCommand('copy');
+                if(successful) showTooltip();
+            } catch (err) {
+                console.error("Copy failed", err);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        function showTooltip() {
+            const tooltip = document.getElementById('discord-tooltip');
+            tooltip.innerText = "Zkopíroval si 💕";
+            tooltip.style.opacity = "1";
+            setTimeout(() => {
+                tooltip.innerText = "Zkopíruj si mě 😘";
+                tooltip.style.opacity = "0";
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
